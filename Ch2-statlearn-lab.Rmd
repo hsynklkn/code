@@ -1,0 +1,400 @@
+
+## Basit komutlar
+
+Örneğin, bir sayı vektörü oluşturmak için c()( concatenate için ) işlevini kullanırız.
+Parantez içindeki tüm sayılar birleştirilir. Aşağıdaki komut R, 1, 3, 2 ve 5 sayılarını birleştirmeyi ve bunları x. 
+Yazdığımızda x, bize vektörü geri verir.
+
+```{r chunk1}
+x <- c(1, 3, 2, 5)
+x
+```
+
+`<-` bu işaretin yerine "=" işaretide ayn atama işlemini yapar.
+
+```{r chunk2}
+x = c(1, 6, 2)
+x
+y = c(1, 4, 3)
+```
+
+R 'ye İki sayı kümesini birbirine eklemeyi söyleyebiliriz . x ve y vektörlerini toplayalım.
+
+Ancak, x ve y aynı uzunlukta olmalıdır.
+
+length() Fonksiyonu kullanarak uzunluklarını kontrol edebiliriz .
+
+```{r chunk3}
+length(x)
+length(y)
+x + y
+```
+
+
+ls(), şimdiye kadar kaydettiğimiz veriler ve işlevler gibi tüm nesnelerin listesine bakmamızı sağlar. 
+
+rm(), istemediğimiz herhangi bir şeyi silmek için kullanılabilir.
+
+
+```{r chunk4}
+ls()
+rm(x, y)
+ls()
+```
+
+Aynı anda tüm nesneleri kaldırmak da mümkündür:
+
+```{r chunk5}
+rm(list = ls())
+```
+
+
+matrix(), bir sayı matrisi oluşturmak için kullanılabilir. İşlevi kullanmadan önce matrix(), onun hakkında daha fazla bilgi edinebiliriz:
+
+
+```{r chunk6}
+?matrix
+```
+
+
+Yardım dosyası, matrix()işlevin bir dizi girdi aldığını gösterir, ancak şimdilik ilk üçüne odaklanıyoruz: veriler (matristeki girişler), satır sayısı ve sütun sayısı. İlk önce basit bir matris oluşturuyoruz.
+
+
+```{r chunk7}
+x = matrix(data = c(1,2,3,4), nrow = 2, ncol = 2)
+x
+```
+
+Yukarıdaki komutta "data", "nrow" ve "ncol" yazmayı atlayabileceğimize dikkat.
+
+
+```{r chunk8}
+
+x = matrix(c(1, 2, 3, 4), 2, 2)
+x
+```
+byrow işlevi de sayları satır boyunca dizmeye yarar yuardaki örnekte süütüna göre dizmişti.
+
+
+```{r chunk9}
+matrix(c(1, 2, 3, 4), 2, 2, byrow = TRUE)
+```
+
+
+sqrt()` funksiyonu her elemann kare köklerini döndürür. The command
+
+
+
+```{r chunk10}
+sqrt(x)
+x^2
+```
+
+`rnorm()`normal dağılmış değişkenler oluşturur özellikleri : ortalams(mean) 0 olan ve standart sapmas 1 olan bir vektör tanmlar.Ama yinede bu ortalama ve standart sapmay değiştirebiliriz.
+
+y diye bir değişken tanplayp ortalamsı 50 olan ve standart sapması 0.1 olan bir vektör tanımlayalım.
+
+
+```{r chunk11}
+x = rnorm(50)
+
+y <- x + rnorm(50, mean = 50, sd = .1)
+y
+cor(x, y)
+
+x
+
+```
+
+
+Eğer rasgele üretilen saylarn her zaman aynı sayları vermesini istediğimizde set.seed() fonksiyonunu kullanırız.
+
+
+```{r chunk12}
+set.seed(1303)
+rnorm(50)
+```
+
+Mean() ve var() işlevleri, bir sayı vektörünün ortalamasını ve varyansını hesaplamak için kullanılabilir.
+
+var() çıktısına sqrt() uygulamak standart sapmayı verecektir. Ya da basitçe sd() işlevini kullanabiliriz.
+
+```{r chunk13}
+set.seed(3)
+y = rnorm(100)
+mean(y)
+var(y)
+sqrt(var(y))
+sd(y)
+```
+
+
+## Graphics
+plot(), verileri çizmenin birincil yoludur.
+
+
+```{r chunk14}
+x <- rnorm(100)
+y <- rnorm(100)
+plot(x, y)
+plot(x, y, xlab = "this is the x-axis",
+    ylab = "this is the y-axis",
+    main = "Plot of X vs Y")
+```
+
+ `pdf()` fonksiyonu ile yukarıdaki grafiği kaydedebiliriz.
+`jpeg()` ile jpeg olarak kaydedebiliriz.
+dev.off() işlevi plot işlemini bitirdiğimizi gösterir.
+
+```{r chunk15}
+pdf("Figure.pdf")
+plot(x, y, col = "green")
+dev.off()
+```
+
+ 
+seq() sayı dizisi oluşturmak için kullanılır.
+
+
+```{r chunk16}
+x <- seq(1, 10)
+x
+x <- 1:10
+x
+x <- seq(-pi, pi, length = 50)
+```
+
+
+
+```{r chunk17}
+y = x
+
+f = outer(x, y, function(x, y) cos(y) / (1 + x^2))
+
+contour(x, y, f)
+
+contour(x, y, f, nlevels = 45, add = T)
+
+fa <- (f - t(f)) / 2
+
+contour(x, y, fa, nlevels = 15)
+?contour()
+
+
+
+```
+
+
+The `image()` function works the same way as `contour()`, except that it produces a color-coded plot whose colors depend on the `z` value. This is
+ known as a , and is sometimes used to plot temperature in weather forecasts. Alternatively, `persp()` can be used to produce a three-dimensional plot.
+ The arguments `theta` and `phi` control the angles at which the plot is viewed.
+
+```{r chunk18}
+image(x, y, fa)
+persp(x, y, fa)
+persp(x, y, fa, theta = 30)
+persp(x, y, fa, theta = 30, phi = 20)
+persp(x, y, fa, theta = 30, phi = 70)
+persp(x, y, fa, theta = 30, phi = 40)
+```
+
+
+### Verileri İndeksleme 
+
+Genellikle bir veri kümesinin bir bölümünü incelemek isteriz. Verilerimizin matriste saklandığını varsayalım A.
+
+```{r chunk19}
+A <- matrix(1:16, 4, 4)
+A
+```
+
+Then, typing
+
+```{r chunk20}
+A[2, 3]
+
+```
+
+ikinci satıra ve üçüncü sütuna karşılık gelen öğeyi seçecektir.
+
+
+Açık parantez simgesinden sonraki ilk sayı [ her zaman satırı, ikinci sayı ise her zaman sütunu ifade eder. 
+
+
+İndeks olarak vektörler sağlayarak aynı anda birden fazla satır ve sütun da seçebiliriz.
+
+```{r chunk21}
+A[c(1, 3), c(2, 4)]
+A[1:3, 2:4]
+A[1:2, ]
+A[, 1:2]
+```
+
+Son iki örnek, sütunlar için dizin veya satırlar için dizin içermez. 
+
+RBunlar , sırasıyla tüm sütunları veya tüm satırları içermesi gerektiğini belirtir . 
+
+R bir matrisin tek bir satırını veya sütununu bir vektör olarak ele alır.
+
+```{r chunk22}
+A[1, ]
+```
+
+The use of a negative sign `-` in the index tells `R` to keep all rows or columns except those indicated in the index.
+
+```{r chunk23}
+A[-c(1, 3), ]
+A[-c(1, 3), -c(1, 3, 4)]
+```
+
+
+İşlev dim(), belirli bir matrisin satır sayısını ve ardından sütun sayısını verir.
+
+
+
+```{r chunk24}
+dim(A)
+```
+
+
+## Loading Data
+
+Auto veri setimizi read.table() foonsiyonu ile okuya biliriz.
+View veya head fonksiyonu ile verimizi görintüleyelim.
+
+
+```{r chunk25}
+Auto <- read.table("Auto.data")
+View(Auto)
+head(Auto)
+```
+
+Yukardaki tablo okuma kısmında bir problem var çünkü değişkenlerin isimlerinide tabloda ilk satıradahil ediyor.
+haeder = T fonksiyonu  değişken isimlerini ilk satırdan kaldırır ve kolon isimlerine atar.
+
+Ayrıca eksik verileride ? işareti olarak tabloda gösteriyor.
+Bunun yerine " na.strings = ? " fonksiyonu ? işaretini nan değeri olarak atar.
+
+
+
+
+```{r chunk26}
+Auto <- read.table("Auto.data", header = T, na.strings = "?", stringsAsFactors = T)
+View(Auto)
+```
+
+The `stringsAsFactors = T` argument tells `R` that any variable containing character strings should be interpreted as a qualitative variable, and that each distinct character string represents a distinct level for that qualitative variable.
+An easy way to load  data from Excel into `R` is to save it as a csv (comma-separated values) file, and then use the `read.csv()` function.
+
+```{r chunk27}
+Auto <- read.csv("Auto.csv", na.strings = "?", stringsAsFactors = T)
+View(Auto)
+dim(Auto)
+Auto[1:4, ]
+```
+
+The `dim()` function tells us that the data has $397$ observations, or rows, and nine variables, or columns. There are various ways to deal with the missing data.  In this case,   only five of the rows contain missing observations,
+and  so we choose to use the `na.omit()` function to simply remove these rows.
+
+```{r chunk28}
+Auto <- na.omit(Auto)
+dim(Auto)
+```
+
+
+Once the data are loaded correctly, we can use `names()` to check the variable names.
+
+```{r chunk29}
+names(Auto)
+attach(Auto)
+```
+
+
+## Additional Graphical and Numerical Summaries
+
+We can use the `plot()` function to produce *scatterplots*  of the quantitative variables. However, simply typing the variable names will produce an error message,
+ because `R` does not know to look in the `Auto` data set for those variables.
+
+```{r chunk30}
+plot(cylinders, mpg)
+```
+
+To refer to a variable, we must type the data set and the variable name  joined with a \textR{\$} symbol.
+ Alternatively, we can use the `attach()`  function in order to tell `R` to make the variables in this data frame available by name. 
+
+```{r chunk31}
+plot(Auto$cylinders, Auto$mpg)
+attach(Auto)
+plot(cylinders, mpg)
+```
+
+The `cylinders` variable is stored as a numeric vector, so `R` has treated it as quantitative. However, since there are only a small number of possible values for `cylinders`,
+ one may prefer to treat it as a qualitative variable. The `as.factor()` function converts quantitative variables into qualitative variables.
+
+```{r chunk32}
+cylinders <- as.factor(cylinders)
+cylinders
+```
+
+If the variable plotted on the $x$-axis is qualitative, then  *boxplots* will  automatically be produced
+by the `plot()` function.  As usual, a number of options can be specified in order to customize the plots.
+
+```{r chunk33}
+plot(cylinders, mpg)
+plot(cylinders, mpg, col = "red")
+plot(cylinders, mpg, col = "red", varwidth = T)
+plot(cylinders, mpg, col = "red", varwidth = T,
+    horizontal = T)
+plot(cylinders, mpg, col = "red", varwidth = T,
+    xlab = "cylinders", ylab = "MPG")
+```
+
+The `hist()` function can be used to plot a . Note that `col = 2` has the same effect as `col = "red"`.
+
+```{r chunk34}
+hist(mpg)
+hist(mpg, col = 2)
+hist(mpg, col = 2, breaks = 15)
+```
+
+The `pairs()` function creates a *scatterplot matrix*, i.e. a scatterplot for every pair of variables. We can also produce scatterplots for just a subset of the variables.
+
+```{r chunk35}
+pairs(Auto)
+pairs(
+    ~ mpg + displacement + horsepower + weight + acceleration,
+    data = Auto
+  )
+```
+
+
+In conjunction with the `plot()` function,  `identify()` provides a useful interactive method for identifying the value of a particular variable for points on a plot. We pass in three arguments to `identify()`: the $x$-axis variable, the $y$-axis variable, and the variable whose values we would like to see printed for each point. Then clicking one or more  points in the plot and hitting Escape will cause `R` to print the values of the variable of interest. The numbers printed under the `identify()` function correspond to the rows for the selected points.
+
+```{r chunk36}
+plot(horsepower, mpg)
+identify(horsepower, mpg)
+```
+
+The `summary()` function produces a numerical summary of each variable in a particular data set.
+
+```{r chunk37}
+summary(Auto)
+```
+
+For qualitative variables such as `name`,  `R` will list the number of observations that fall in each category. We can also produce a summary of just a single variable.
+
+```{r chunk38}
+summary(mpg)
+```
+
+
+
+
+Once we have finished using `R`, we type `q()` in order to shut it down, or quit.
+When exiting `R`, we have the option to save the current  so that all
+objects (such as data sets)
+that we have created in this `R` session will be available next time.
+ Before exiting `R`, we may want to save a record of all of the commands that we typed in the most recent session; this can be accomplished using the `savehistory()` function. Next time we enter `R`, we can load that history using
+the `loadhistory()` function, if we wish. 
+
+
