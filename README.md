@@ -1,2 +1,2 @@
-# code
-compilation of R programing code
+# Spaceshiptitanic
+I worked on an old Kaggle competition dataset.
